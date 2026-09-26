@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+DB_DRIVER="${1:-memory}"
+
+export APP_PORT=8080
+export DB_DRIVER
+
+export DB_POSTGRES_HOST="localhost"
+export DB_POSTGRES_PORT=5555
+export DB_POSTGRES_DATABASE="auth_svc"
+export DB_POSTGRES_USER=
+export DB_POSTGRES_PASSWORD=
+export DB_POSTGRES_SSLMODE="disable"
+
+export DB_SQLITE_PATH="./data/auth.db"
+
+echo "Starting Auth Service..."
+echo "  DB Driver : ${DB_DRIVER}"
+echo "  App Port  : ${APP_PORT}"
+
+exec go run ./cmd/api

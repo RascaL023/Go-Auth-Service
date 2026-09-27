@@ -17,8 +17,7 @@ import (
 func ResolveAuthorityRepository(ctx context.Context, cfg config.Config) (authority.Repository, error) {
 	switch strings.ToLower(cfg.Database.Driver){
 	case "memory", "mockup":
-		db := memory.NewConnection()
-		return memory.New(db.DB), nil
+		return memory.New(make(map[int64]*authority.Authority))
 
 	case "postgre", "postgres":
 		url := url.URL{

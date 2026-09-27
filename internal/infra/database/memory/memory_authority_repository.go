@@ -5,10 +5,12 @@ import (
 	"fmt"
 	"go-auth-service/internal/domain"
 	entity "go-auth-service/internal/domain/authority"
+	"sync"
 )
 
 type MemoryAuthorityRepository struct {
 	DB 		map[int64]*entity.Authority
+	mtx		sync.RWMutex
 	LastID	int64
 }
 
@@ -25,6 +27,8 @@ func (m *MemoryAuthorityRepository) FindByID(
 	ctx context.Context,
 	id int64,
 ) (*entity.Authority, error) {
+	m.mtx.RLock()
+	defer m.mtx.RUnlock()
 	data, ok := m.DB[id]
 	if !ok {
 		return nil, domain.NewAppError(
@@ -42,6 +46,9 @@ func (m *MemoryAuthorityRepository) FindByIDs(
 	ids []int64,
 ) ([]*entity.Authority, error) {
 	var datas []*entity.Authority
+	m.mtx.RLock()
+	defer m.mtx.RUnlock()
+
 	for _, id := range ids {
 		data, ok := m.DB[id]
 		if !ok {
@@ -59,6 +66,9 @@ func (m *MemoryAuthorityRepository) FindByIDs(
 }
 
 func (m *MemoryAuthorityRepository) ExistByName(authorityName string) bool {
+	m.mtx.RLock()
+	defer m.mtx.RUnlock()
+
 	for _, value  := range m.DB {
 		if authorityName == value.Name {
 			return true
@@ -74,6 +84,9 @@ func (m *MemoryAuthorityRepository) Create(
 	ctx context.Context,
 	authority entity.Authority,
 ) (*entity.Authority, error) {
+	m.mtx.Lock()
+	defer m.mtx.Unlock()
+
 	result := m.upsert(authority)
 	m.LastID++
 	return &result, nil
@@ -83,6 +96,9 @@ func (m *MemoryAuthorityRepository) Update(
 	ctx context.Context,
 	authority entity.Authority,
 ) (*entity.Authority, error) {
+	m.mtx.Lock()
+	defer m.mtx.Unlock()
+
 	result := m.upsert(authority)
 	return &result, nil
 }

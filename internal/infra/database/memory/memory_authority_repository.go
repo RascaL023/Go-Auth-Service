@@ -19,38 +19,7 @@ func New(db map[int64]*entity.Authority) *MemoryAuthorityRepository {
 	}
 }
 
-
-func (m *MemoryAuthorityRepository) Create(
-	ctx context.Context,
-	authority entity.Authority,
-) (*entity.Authority, error) {
-	result := m.upsert(authority)
-	m.LastID++
-	return &result, nil
-}
-
-func (m *MemoryAuthorityRepository) ExistByID(id int64) bool {
-	_, ok := m.DB[id]
-	return ok
-}
-
-func (m *MemoryAuthorityRepository) ExistByName(authorityName string) bool {
-	for _, value  := range m.DB {
-		if authorityName == value.Name {
-			return true
-		}
-	}
-	
-	return false
-}
-
-func (m *MemoryAuthorityRepository) Update(
-	ctx context.Context,
-	authority entity.Authority,
-) (*entity.Authority, error) {
-	result := m.upsert(authority)
-	return &result, nil
-}
+// =========== READ ===========
 
 func (m *MemoryAuthorityRepository) FindByID(
 	ctx context.Context,
@@ -64,7 +33,8 @@ func (m *MemoryAuthorityRepository) FindByID(
 		)
 	}
 
-	return data, nil
+	copy := *data
+	return &copy, nil
 }
 
 func (m *MemoryAuthorityRepository) FindByIDs(
@@ -81,11 +51,43 @@ func (m *MemoryAuthorityRepository) FindByIDs(
 			)
 		}
 
-		datas = append(datas, data)
+		copy := *data
+		datas = append(datas, &copy)
 	}
 
 	return datas, nil
 }
+
+func (m *MemoryAuthorityRepository) ExistByName(authorityName string) bool {
+	for _, value  := range m.DB {
+		if authorityName == value.Name {
+			return true
+		}
+	}
+	
+	return false
+}
+
+// =========== WRITE ===========
+
+func (m *MemoryAuthorityRepository) Create(
+	ctx context.Context,
+	authority entity.Authority,
+) (*entity.Authority, error) {
+	result := m.upsert(authority)
+	m.LastID++
+	return &result, nil
+}
+
+func (m *MemoryAuthorityRepository) Update(
+	ctx context.Context,
+	authority entity.Authority,
+) (*entity.Authority, error) {
+	result := m.upsert(authority)
+	return &result, nil
+}
+
+// =========== UTIL ===========
 
 func (m *MemoryAuthorityRepository) upsert(data entity.Authority) entity.Authority {
 	var id int64

@@ -1,6 +1,8 @@
 # CURRENT TASK
 
 - Clearing authority objective
+    - Add Delete and make SoftDeleted behavior
+    - Update repository interface
 
 ---
 # PENDING
@@ -12,6 +14,7 @@
 
 - Clearing authority objective
     - Add implementation MemoryRepository
+    - Solidate MemoryRepository
 
 - Add environment
     - errors

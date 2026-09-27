@@ -1,3 +1,4 @@
 .myenv
 run-api.sh
 data/**
+**.del

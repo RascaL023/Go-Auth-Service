@@ -8,13 +8,48 @@ import (
 )
 
 type MemoryAuthorityRepository struct {
-	DB map[int64]*entity.Authority
+	DB 		map[int64]*entity.Authority
+	LastID	int64
 }
 
 func New(db map[int64]*entity.Authority) *MemoryAuthorityRepository {
 	return &MemoryAuthorityRepository{
 		DB: db,
+		LastID: 1,
 	}
+}
+
+
+func (m *MemoryAuthorityRepository) Create(
+	ctx context.Context,
+	authority entity.Authority,
+) (*entity.Authority, error) {
+	result := m.upsert(authority)
+	m.LastID++
+	return &result, nil
+}
+
+func (m *MemoryAuthorityRepository) ExistByID(id int64) bool {
+	_, ok := m.DB[id]
+	return ok
+}
+
+func (m *MemoryAuthorityRepository) ExistByName(authorityName string) bool {
+	for _, value  := range m.DB {
+		if authorityName == value.Name {
+			return true
+		}
+	}
+	
+	return false
+}
+
+func (m *MemoryAuthorityRepository) Update(
+	ctx context.Context,
+	authority entity.Authority,
+) (*entity.Authority, error) {
+	result := m.upsert(authority)
+	return &result, nil
 }
 
 func (m *MemoryAuthorityRepository) FindByID(
@@ -50,4 +85,17 @@ func (m *MemoryAuthorityRepository) FindByIDs(
 	}
 
 	return datas, nil
+}
+
+func (m *MemoryAuthorityRepository) upsert(data entity.Authority) entity.Authority {
+	var id int64
+
+	if data.ID != 0 {
+		id = data.ID
+	} else {
+		id = m.LastID
+	}
+
+	m.DB[id] = &data
+	return *m.DB[id]
 }

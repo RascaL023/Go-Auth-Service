@@ -1,7 +1,8 @@
 # CURRENT TASK
 
 - Clearing authority objective
-    - Implement service
+    - Add test on memory repository
+    - Implement handler
 
 ---
 # PENDING
@@ -12,6 +13,7 @@
 # COMPLETED
 
 - Clearing authority objective
+    - Implement service
     - Update repository interface
     - Add Delete
     - Implement HardDelete

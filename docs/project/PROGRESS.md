@@ -1,7 +1,6 @@
 # CURRENT TASK
 
 - Clearing authority objective
-    - Add test on memory repository
     - Implement handler
 
 ---
@@ -13,6 +12,7 @@
 # COMPLETED
 
 - Clearing authority objective
+    - Add test on memory repository
     - Implement service
     - Update repository interface
     - Add Delete

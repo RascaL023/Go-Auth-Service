@@ -7,5 +7,4 @@ type Authority struct {
 
 	CreatedAt 	int64
 	UpdatedAt 	*int64
-	DeletedAt 	*int64
 }

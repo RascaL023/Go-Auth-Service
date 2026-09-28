@@ -3,6 +3,7 @@ package sqlite
 import (
 	"context"
 	"database/sql"
+	"go-auth-service/internal/domain"
 	entity "go-auth-service/internal/domain/authority"
 )
 
@@ -16,6 +17,8 @@ func New(db *sql.DB) *SqliteAuthorityRepository {
 	}
 }
 
+
+// =========== READ ===========
 
 func (s *SqliteAuthorityRepository) FindByID(
 	ctx context.Context, 
@@ -34,3 +37,48 @@ func (s *SqliteAuthorityRepository) FindByIDs(
 
 	return nil, nil
 }
+
+func (s *SqliteAuthorityRepository) ExistByName(authorityName string) bool {
+
+	return false
+}
+
+// =========== WRITE ===========
+
+func (s *SqliteAuthorityRepository) Create(
+	ctx context.Context,
+	authority entity.Authority,
+) (*entity.Authority, error) {
+	// TODO: make implementation sqlite create
+
+	return nil, domain.NewAppError(
+		domain.ErrInternal,  
+		"Not implemented yet",
+	)
+}
+
+func (s *SqliteAuthorityRepository) Update(
+	ctx context.Context,
+	authority entity.Authority,
+) (*entity.Authority, error) {
+	// TODO: make implementation sqlite update
+
+	return nil, domain.NewAppError(
+		domain.ErrInternal,  
+		"Not implemented yet",
+	)
+}
+func (s *SqliteAuthorityRepository) DeleteByID(
+	ctx context.Context,
+	id int64,
+) error {
+	// TODO: make implementation sqlite delete
+
+	return domain.NewAppError(
+		domain.ErrInternal,  
+		"Not implemented yet",
+	)
+}
+
+// =========== UTIL ===========
+

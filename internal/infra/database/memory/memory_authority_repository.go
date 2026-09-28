@@ -137,6 +137,25 @@ func (m *MemoryAuthorityRepository) Update(
 	return &saved, nil
 }
 
+func (m *MemoryAuthorityRepository) DeleteByID(
+	ctx context.Context, 
+	id int64,
+) error {
+	m.mtx.Lock()
+	defer m.mtx.Unlock()
+
+	if authority, exist := m.db[id]; exist {
+		delete(m.db, id)
+		delete(m.nameIndex, authority.Name)
+		return nil
+	}
+
+	return domain.NewAppError(
+		domain.ErrNotFound,
+		fmt.Sprintf("Cannot find authority with ID %d", id),
+	)
+}
+
 // =========== UTIL ===========
 
 func (m *MemoryAuthorityRepository) save(data entity.Authority) entity.Authority {

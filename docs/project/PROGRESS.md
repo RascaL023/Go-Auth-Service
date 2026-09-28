@@ -1,8 +1,7 @@
 # CURRENT TASK
 
 - Clearing authority objective
-    - Add Delete and make SoftDeleted behavior
-    - Update repository interface
+    - Implement service
 
 ---
 # PENDING
@@ -13,6 +12,9 @@
 # COMPLETED
 
 - Clearing authority objective
+    - Update repository interface
+    - Add Delete
+    - Implement HardDelete
     - Add implementation MemoryRepository
     - Solidate MemoryRepository
 

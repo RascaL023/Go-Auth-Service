@@ -23,7 +23,6 @@ func ToAuthorityAdminResponse(a *authority.Authority) AuthorityAdminResponse {
 		Description: a.Description,
 		CreatedAt: FormattedUnixTime(a.CreatedAt),
 		UpdatedAt: (*FormattedUnixTime)(a.UpdatedAt),
-		DeletedAt: (*FormattedUnixTime)(a.DeletedAt),
 	}
 }
 

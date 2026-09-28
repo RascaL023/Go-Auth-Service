@@ -6,6 +6,7 @@ var (
 	ErrConflict 			= errors.New("conflict")
 	ErrNotFound 			= errors.New("not found")
 	ErrDuplicate 			= errors.New("duplicate entry")
+	ErrInternal 			= errors.New("internal app error")
 )
 
 type AppError struct {

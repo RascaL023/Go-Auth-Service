@@ -1,10 +1,15 @@
 package authority
 
-import "context"
+import  "context"
 
 type Repository interface {
 
-	FindByID(ctx context.Context, id int64) (*Authority, error)
-	FindByIDs(ctx context.Context, ids []int64) ([]*Authority, error)
+	FindByID(context.Context, int64) (*Authority, error)
+	FindByIDs(context.Context, []int64) ([]*Authority, error)
+	ExistByName(string) bool
+
+	Create(context.Context, Authority) (*Authority, error)
+	Update(context.Context, Authority) (*Authority, error)
+	DeleteByID(context.Context, int64) error
 
 }

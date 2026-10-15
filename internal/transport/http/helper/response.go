@@ -45,6 +45,8 @@ func Respond(w http.ResponseWriter, status int, message string, data any, err er
 	// Handler/controller error
 	case errors.Is(err, ErrBadParam):
 		writeError(w, http.StatusBadRequest, err.Error(), "BAD_REQUEST")
+	case errors.Is(err, ErrBadJSONBody):
+		writeError(w, http.StatusBadRequest, err.Error(), "BAD_REQUEST")
 	case errors.Is(err, ErrValidation):
 		writeError(w, http.StatusBadRequest, err.Error(), "BAD_REQUEST")
 		fields, ok := ValidationFields(err)

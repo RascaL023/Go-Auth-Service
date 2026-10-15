@@ -19,6 +19,6 @@ func NewAuthorityRouter(mux *http.ServeMux, handler *AuthorityHandler) *Authorit
 }
 
 func (r *AuthorityRouter) Handle() {
-	// r.mux.HandleFunc("GET " + baseEndpoint, r.handler.GetByID,)
 	r.mux.HandleFunc("GET " + baseEndpoint + "/{id}", r.handler.GetByID,)
+	r.mux.HandleFunc("POST " + baseEndpoint, r.handler.Create,)
 }

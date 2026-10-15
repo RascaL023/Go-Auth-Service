@@ -1,7 +1,7 @@
 # CURRENT TASK
 
 - Clearing authority objective
-    - Implement handler
+    - Implement handler: Update, Delete, Get By IDs
 
 ---
 # PENDING
@@ -12,6 +12,7 @@
 # COMPLETED
 
 - Clearing authority objective
+    - Implement handler: Create, Get By ID
     - Add test on memory repository
     - Implement service
     - Update repository interface
@@ -24,4 +25,3 @@
     - errors
     - response
     - DTOs
-

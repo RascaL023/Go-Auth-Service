@@ -2,13 +2,13 @@
 
 ## Authority
 Read UseCase
-- [] Get by ID
-- [] Get by IDs
+- [x] Get by ID     | DB: memory
+- [ ] Get by IDs
 
 Administrative UseCase
-- [] Create
-- [] Update
-- [] Delete
+- [x] Create        | DB: memory
+- [ ] Update
+- [ ] Delete
 
 Optional
-- [] Get all paged
+- [ ] Get all paged

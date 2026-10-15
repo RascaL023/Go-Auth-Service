@@ -1,0 +1,14 @@
+##### READ
+### GET by ID
+GET {{baseUrl}}/authorities/1
+
+
+##### WRITE
+### Create
+POST {{baseUrl}}/authorities
+Content-Type: application/json
+
+{
+    "name": "Test",
+    "description": "It's work?"
+}

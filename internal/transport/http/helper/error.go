@@ -6,6 +6,7 @@ import (
 
 var (
 	ErrValidation 			= errors.New("validation error")
+	ErrBadJSONBody 			= errors.New("bad json body")
 	ErrBadParam 			= errors.New("bad parameter")
 	ErrUnauthorized 		= errors.New("unauthorized")
 	ErrForbidden 			= errors.New("forbidden")

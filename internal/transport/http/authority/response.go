@@ -12,5 +12,4 @@ type AuthorityAdminResponse struct {
 
 	CreatedAt 	FormattedUnixTime  	`json:"createdAt"`
 	UpdatedAt 	*FormattedUnixTime	`json:"updatedAt"`
-	DeletedAt 	*FormattedUnixTime	`json:"deletedAt"`
 } 

@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"go-auth-service/internal/domain"
+	"time"
 )
 
 type Service struct {
@@ -28,7 +29,7 @@ func (s *Service) GetByID(
 		return nil, err
 	}
 
-	return  authority, nil
+	return authority, nil
 }
 
 func (s *Service) GetByIDs(
@@ -53,6 +54,7 @@ func (s *Service) Create(
 		return nil, err
 	}
 
+	entity.CreatedAt = time.Now().Unix()
 	authority, err := s.repo.Create(ctx, entity)
 	if err != nil {
 		return nil, err
@@ -76,6 +78,8 @@ func (s *Service) Update(
 		}
 	}
 
+	now := time.Now().Unix()
+	entity.UpdatedAt = &now
 	updated, err := s.repo.Update(ctx, entity)
 	if err != nil {
 		return nil, err

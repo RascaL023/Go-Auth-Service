@@ -54,7 +54,8 @@ func (h *AuthorityHandler) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	helper.Respond(w, 201, "Authority successfully created", saved, nil)
+	response := ToAuthorityAdminResponse(saved)
+	helper.Respond(w, 201, "Authority successfully created", response, nil)
 }
 
 

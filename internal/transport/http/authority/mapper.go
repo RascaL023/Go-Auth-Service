@@ -27,6 +27,8 @@ func ToAuthorityAdminResponse(a *authority.Authority) AuthorityAdminResponse {
 }
 
 func (t FormattedUnixTime) MarshalJSON() ([]byte, error) {
-	formatted := time.Unix(int64(t), 0).UTC().Format("2006-01-02 15:04:05")
+	// UTC based:
+	// formatted := time.Unix(int64(t), 0).UTC().Format("2006-01-02 15:04:05")
+	formatted := time.Unix(int64(t), 0).Format("2006-01-02 15:04:05")
 	return []byte(strconv.Quote(formatted)), nil
 }

@@ -80,6 +80,8 @@ func (s *Service) Update(
 
 	now := time.Now().Unix()
 	entity.UpdatedAt = &now
+	entity.CreatedAt = existing.CreatedAt
+
 	updated, err := s.repo.Update(ctx, entity)
 	if err != nil {
 		return nil, err

@@ -1,4 +1,10 @@
-.myenv
+# For local dev usage, e.g notes
+.local-dev
+
+# Temporary wrapper script for run
 run-api.sh
+
 data/**
+
 **.del
+**.tmp

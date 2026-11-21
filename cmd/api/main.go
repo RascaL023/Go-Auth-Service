@@ -2,12 +2,14 @@ package main
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"go-auth-service/internal/config"
 	"go-auth-service/internal/domain/authority"
 	"go-auth-service/internal/infra/database"
-	appHtpp "go-auth-service/internal/transport/http/authority"
+	authorityhttp "go-auth-service/internal/transport/http/authority"
 	"log"
+	"net"
 	"net/http"
 	"os"
 	"os/signal"
@@ -15,9 +17,10 @@ import (
 )
 
 func main() {
-	sigCh				:= make(chan os.Signal, 1) // Buffer 1 untuk terima 1 input terminal dengan tipe os.Signal
+	sigCh := make(chan os.Signal, 1)   // Buffer 1 untuk terima 1 input terminal dengan tipe os.Signal
 	signal.Notify(sigCh, os.Interrupt) // Kirim sinyal interupt e.g ctrl + c(SIGINT) ke sigCh
-	parentCtx 			:= context.Background()
+	defer signal.Stop(sigCh)
+	parentCtx := context.Background()
 
 	startupCtx, startupCancel := context.WithTimeout(
 		parentCtx,
@@ -25,40 +28,57 @@ func main() {
 	)
 	defer startupCancel()
 
-	config, err := config.Load()
+	cfg, err := config.Load()
 	if err != nil {
 		log.Fatal(err.Error())
-		return
 	}
 
-	authorityRepo, err := database.ResolveAuthorityRepository(startupCtx, config)
-	if  err != nil {
+	authorityRepo, err := database.ResolveAuthorityRepository(startupCtx, cfg)
+	if err != nil {
 		log.Fatal(err.Error())
-		return
 	}
 
-	authorityService	:= authority.NewService(authorityRepo)	
-	authorityHandler	:= appHtpp.NewAuthorityHandler(authorityService)
+	authorityService := authority.NewService(authorityRepo)
+	authorityHandler := authorityhttp.NewAuthorityHandler(authorityService)
 
-	mux 				:= http.NewServeMux()
-	authorityRouter		:= appHtpp.NewAuthorityRouter(mux, authorityHandler)
+	mux := http.NewServeMux()
+	authorityRouter := authorityhttp.NewAuthorityRouter(mux, authorityHandler)
 
 	authorityRouter.Handle()
 
 	server := &http.Server{
-		Addr: fmt.Sprintf(":%d", config.Server.Port),
+		Addr:    fmt.Sprintf(":%d", cfg.Server.Port),
 		Handler: mux,
 	}
-	go server.ListenAndServe();
-	fmt.Println("App run on ", config.Server.Port)
 
-	<-sigCh
-	shutdownCtx, shutdownCancel	:= context.WithTimeout(
-		parentCtx,
-		5*time.Second,
-	)
-	defer shutdownCancel()
+	listener, err := net.Listen("tcp", server.Addr)
+	if err != nil {
+		log.Fatalf("failed to listen on %s: %v", server.Addr, err)
+	}
 
-	server.Shutdown(shutdownCtx)
-	fmt.Println("App stoped")
+	serveErrCh := make(chan error, 1)
+	go func() {
+		serveErrCh <- server.Serve(listener)
+	}()
+	log.Printf("server listening on %s", listener.Addr())
+
+	select {
+	case err := <-serveErrCh:
+		if err != nil && !errors.Is(err, http.ErrServerClosed) {
+			log.Fatalf("server error: %v", err)
+		}
+	case <-sigCh:
+		shutdownCtx, shutdownCancel := context.WithTimeout(
+			parentCtx,
+			5*time.Second,
+		)
+		defer shutdownCancel()
+
+		if err := server.Shutdown(shutdownCtx); err != nil {
+			log.Printf("graceful shutdown failed: %v", err)
+			_ = server.Close()
+		}
+
+		log.Println("server stopped")
+	}
 }

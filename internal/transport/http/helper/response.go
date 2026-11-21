@@ -48,7 +48,6 @@ func Respond(w http.ResponseWriter, status int, message string, data any, err er
 	case errors.Is(err, ErrBadJSONBody):
 		writeError(w, http.StatusBadRequest, err.Error(), "BAD_REQUEST")
 	case errors.Is(err, ErrValidation):
-		writeError(w, http.StatusBadRequest, err.Error(), "BAD_REQUEST")
 		fields, ok := ValidationFields(err)
 		if !ok {
 			fields = []FieldError{{Field: "request", Message: "Request is invalid"}}

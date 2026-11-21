@@ -2,6 +2,7 @@ package authority
 
 import  "context"
 
+// TODO!: consider return copy instead of reference
 type Repository interface {
 
 	FindByID(context.Context, int64) (*Authority, error)

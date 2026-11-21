@@ -26,7 +26,10 @@ func (s *SqliteAuthorityRepository) FindByID(
 ) (*entity.Authority, error) {
 	// TODO: make implementation
 
-	return nil, nil
+	return nil, domain.NewAppError(
+		domain.ErrInternal,
+		"Not implemented yet",
+	)
 }
 
 func (s *SqliteAuthorityRepository) FindByIDs(
@@ -35,7 +38,10 @@ func (s *SqliteAuthorityRepository) FindByIDs(
 ) ([]*entity.Authority, error) {
 	// TODO: make implementation
 
-	return nil, nil
+	return nil, domain.NewAppError(
+		domain.ErrInternal,
+		"Not implemented yet",
+	)
 }
 
 func (s *SqliteAuthorityRepository) ExistByName(authorityName string) bool {

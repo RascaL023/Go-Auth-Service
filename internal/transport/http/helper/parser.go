@@ -24,6 +24,7 @@ func ParseID(rawID string) (int64, error) {
 	return id, nil
 }
 
+// TODO!: consider to handle error that might caused panic
 func Pagination(r *http.Request) (int, int) {
 	page, _ := strconv.Atoi(r.URL.Query().Get("page"))
 	size, _ := strconv.Atoi(r.URL.Query().Get("size"))

@@ -27,7 +27,10 @@ func (p *PostgreAuthorityRepository) FindByID(
 ) (*entity.Authority, error) {
 	// TODO: make implementation
 
-	return nil, nil
+	return nil, domain.NewAppError(
+		domain.ErrInternal,
+		"Not implemented yet",
+	)
 }
 
 func (p *PostgreAuthorityRepository) FindByIDs(
@@ -36,7 +39,10 @@ func (p *PostgreAuthorityRepository) FindByIDs(
 ) ([]*entity.Authority, error) {
 	// TODO: make implementation
 
-	return nil, nil
+	return nil, domain.NewAppError(
+		domain.ErrInternal,
+		"Not implemented yet",
+	)
 }
 
 func (p *PostgreAuthorityRepository) ExistByName(authorityName string) bool {
